@@ -1,0 +1,7 @@
+libicu-dev
+zlib1g-dev
+make
+libcurl4-openssl-dev
+libssl-dev
+pandoc
+libxml2-dev

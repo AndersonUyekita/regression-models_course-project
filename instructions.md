@@ -13,19 +13,14 @@
 -   📆 Week 4
     -   🚦 Start: Tuesday, 05 July 2022
     -   🏁 Finish: Tuesday, 05 July 2022
+-   📄 README: [README.md](./README.md)
+-   🌎 Rpubs: [Interactive
+    Document](https://rpubs.com/AndersonUyekita/regression-models_reproducible-research)
 
 ------------------------------------------------------------------------
 
-## XXXXXX
+## Instructions
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/AndersonUyekita/regression-models_course-project/master?urlpath=rstudio)
-
-### Synopsis
-
-Ipsum Lorem
-
-------------------------------------------------------------------------
-
-## 1. Introduction
+### 1. Introduction
 
 Ipsum Lorem
