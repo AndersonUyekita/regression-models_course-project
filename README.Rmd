@@ -43,9 +43,9 @@ library(rmarkdown)
 
 --------------------------------------------------------------------------------
 
-## XXXXXX
+## Brief Analysis about Manual and Automatic Transmissions
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/AndersonUyekita/regression-models_course-project/master?urlpath=rstudio)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/AndersonUyekita/regression-models_course-project/main?urlpath=rstudio)
 
 ### Synopsis
 
