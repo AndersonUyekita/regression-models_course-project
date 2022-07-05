@@ -25,6 +25,9 @@ always_allow_html: true
 knitr::opts_chunk$set(echo=TRUE,cache=TRUE,message=FALSE,warning=FALSE)
 library(rmarkdown)
 library(shiny)
+library(datasets)
+library(explore)
+library(dplyr)
 ```
 
 `r if(!knitr::is_html_output()) {sprintf(fmt = "* &#x1f468;&#x1F3FB;&#x200d;&#x1f4bb; Author: %s", params$author)}`
@@ -42,4 +45,65 @@ library(shiny)
 
 ## Codebook
 
-Ipsum Lorem
+According to the [R Documentation][1]
+
+[1]: https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html
+
+### Description
+
+> Henderson and Velleman (1981) comment in a footnote to Table 1: ‘Hocking [original transcriber]'s noncrucial coding of the Mazda's rotary engine as a straight six-cylinder engine and the Porsche's flat engine as a V engine, as well as the inclusion of the diesel Mercedes 240D, have been retained to enable direct comparisons to be made with previous analyses.’
+
+### Dimensions
+
+* Observations: `r dim(datasets::mtcars)[1]`
+* Variables: `r dim(datasets::mtcars)[2]`
+
+### `str`
+
+```{r,echo=FALSE}
+str(datasets::mtcars)
+```
+
+### Variables Description
+
+* `mpg` : Miles/(US) gallon
+* `cyl` : Number of cylinders
+* `disp` : Displacement (cu.in.)
+* `hp` : Gross horsepower
+* `drat` : Rear axle ratio
+* `wt` : Weight (1000 lbs)
+* `qsec` : 1/4 mile time
+* `vs` : Engine (0 = V-shaped, 1 = straight)
+* `am` : Transmission (0 = automatic, 1 = manual)
+* `gear` : Number of forward gears
+* `carb` : Number of carburetors
+
+### Summary
+
+```{r,echo=FALSE}
+summary(datasets::mtcars)
+```
+
+### Source
+
+> Henderson and Velleman (1981), Building multiple regression models interactively. Biometrics, 37, 391–411.
+
+### Exploratory
+
+```{r,echo=FALSE}
+mtcars %>% 
+  select(mpg, cyl, disp, hp, gear) %>% 
+  explore_all(target = gear)
+```
+
+```{r,echo=FALSE}
+mtcars %>% 
+  select(drat, wt, qsec, vs, gear) %>% 
+  explore_all(target = gear)
+```
+
+```{r,echo=FALSE}
+mtcars %>% 
+  select(am, carb,vs, gear) %>% 
+  explore_all(target = gear)
+```
