@@ -12,7 +12,7 @@
     -   🧑‍🏫 Instructor: Brian Caffo
 -   📆 Week 4
     -   🚦 Start: Tuesday, 05 July 2022
-    -   🏁 Finish: Friday, 08 July 2022
+    -   🏁 Finish: Saturday, 09 July 2022
 
 ------------------------------------------------------------------------
 
@@ -20,9 +20,13 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/AndersonUyekita/regression-models_course-project/main?urlpath=rstudio)
 
-### Executive Summary
+## Executive Summary
 
-Ipsum Lorem
+The data analysis process in this document has identified that manual
+vehicles have better performance than automatics concerning miles per
+gallon (`mpg`). Furthermore, based on the linear regression modeled by
+this study, this difference in absolute value has reached an average of
+3.79 miles per gallon, which is a significant number.
 
 ------------------------------------------------------------------------
 
@@ -31,57 +35,231 @@ Ipsum Lorem
 The *Motor Trend Car Road Test* has evaluated 32 automobiles varying
 from 1973-74 models, and this study comprises fuel consumption,
 horsepower, weight, and other aspects. Based on it, the present
-publication aims to answer one central question:
+publication aims to answer two questions:
 
 1.  “Is an automatic or manual transmission better for MPG?”
-
-Even though is it true or not, this document will:
-
 2.  “Quantify the MPG difference between automatic and manual
     transmissions.”
 
 ## 2. Requeriments and Settings
 
-If you are prone to reproduce this study, please visit the [Github
+If you are interested in reproducing this study, please visit the
+[Github
 repository](https://github.com/AndersonUyekita/regression-models_course-project)
 to have access to the raw document.
 
 ## 3. Loading Data and EDA
 
-``` r
-mtcars
-```
+The adjusted data frame has 32 observations with no `NA` values, divided
+into 6 (six) numeric variables (no one is standardized or scaled) and 5
+(five) categorical variables. For more exploratory details, please, find
+them in APPENDIX section A1. For more information about the variables
+descriptions, please, see it on the [R Documentation
+website](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html).
 
-    ##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
-    ## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
-    ## Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
-    ## Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
-    ## Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
-    ## Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
-    ## Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
-    ## Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
-    ## Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
-    ## Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
-    ## Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
-    ## Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
-    ## Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
-    ## Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
-    ## Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
-    ## Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
-    ## Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
-    ## Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
-    ## Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
-    ## Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
-    ## Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
-    ## Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
-    ## Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
-    ## AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
-    ## Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
-    ## Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
-    ## Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
-    ## Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
-    ## Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
-    ## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
-    ## Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
-    ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
-    ## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+Due to Figure 2 in section A2 from APPENDIX, I have tested the
+hypothesis that the average consumption from automatic and manual
+vehicles is equal. In other words,
+![H_O: \\mu\_{automatic} = \\mu\_{manual}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;H_O%3A%20%5Cmu_%7Bautomatic%7D%20%3D%20%5Cmu_%7Bmanual%7D "H_O: \mu_{automatic} = \mu_{manual}"),
+the p-value is 0.14% which is way less than alpha (5%). For this reason,
+the
+![H_O](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;H_O "H_O")
+was **Rejected**, which means the averages of automatic and manual
+transmissions are from different populations.
+
+## 4. Model Selection
+
+The model selection approach used for this project is based on the Week
+3 videos and the Chapter Multiple variables and model selection from
+Regression Models for Data Science in R book.
+
+### 4.1. Base line model
+
+![lm(formula  = mpg \\sim am, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am, data = mtcars)")
+
+The baseline model is the Ordinary Linear Regression, and this model
+uses only transmission (`am`) to explain the consumption in miles per
+gallon (`mpg`). From the hypothesis tested in Section 3, this baseline
+model has identified that manual transmission performs better than
+automatic ones. On average, manual transmission yields 24.39 miles per
+gallon. On the other hand, automatic transmission yield 17.15 miles per
+gallon. The difference is 7.24 miles per gallon.
+
+### 4.2. Analysis of Variance
+
+Using the `anova()` function, it was possible to run several
+combinations, reaching the final model using am, wt, and interaction
+between am and wt.
+
+![lm(formula  = mpg \\sim am + wt + am \\cdot wt, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%20%2B%20wt%20%2B%20am%20%5Ccdot%20wt%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am + wt + am \cdot wt, data = mtcars)")
+
+I have decided to use a simpler model due to the parsimony. The R2
+adjusted has reached 81.51%. All p-values of the model are below alpha
+(5%).
+
+The linear model coefficients:
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Estimate
+</th>
+<th style="text-align:right;">
+Std. Error
+</th>
+<th style="text-align:right;">
+t value
+</th>
+<th style="text-align:right;">
+Pr(\>\|t\|)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+31.416055
+</td>
+<td style="text-align:right;">
+3.0201093
+</td>
+<td style="text-align:right;">
+10.402291
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ammanual
+</td>
+<td style="text-align:right;">
+14.878422
+</td>
+<td style="text-align:right;">
+4.2640422
+</td>
+<td style="text-align:right;">
+3.489276
+</td>
+<td style="text-align:right;">
+0.0016210
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wt
+</td>
+<td style="text-align:right;">
+-3.785907
+</td>
+<td style="text-align:right;">
+0.7856478
+</td>
+<td style="text-align:right;">
+-4.818836
+</td>
+<td style="text-align:right;">
+0.0000455
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ammanual:wt
+</td>
+<td style="text-align:right;">
+-5.298361
+</td>
+<td style="text-align:right;">
+1.4446993
+</td>
+<td style="text-align:right;">
+-3.667449
+</td>
+<td style="text-align:right;">
+0.0010171
+</td>
+</tr>
+</tbody>
+</table>
+
+## 5. Residual Analysis
+
+Due to the low number of observations, below 50, I have used the
+Shapiro-Wilk test to ensure the residual’s normality. The p-value
+obtained from this test was 8.72%, sufficient to reject the null
+hypothesis and proving the residual’s normality.
+
+The residual analysis will be based on Figure 2 in section A2. from
+APPENDIX. This figure aims to corroborate the following explanations:
+
+-   **Residual vs. Fitted:** The residual bounces around zero, which
+    suggests an excellent linear relationship. Also, the residual is a
+    homogeneous spread on the plot showing that the variance is
+    “constant” in addition, I have identified no outlier.
+-   **Normal Q-Q:** Most of the data is around the line, except in the
+    top right of the chart. I did not identify any issue related to
+    non-normality.
+-   **Scale-Location:** There are no patterns in the points, the data
+    stay between a fixed band, and the red line is almost constant. From
+    those characteristics, the residual is considered homoscedasticity.
+-   **Residual vs. Leverage:** No points above the dotted line means
+    there is no influential high point.
+
+## 6. Conclusion
+
+Considering the baseline model, the `am` variable can explain 33.85% of
+the miles per gallon. However, In the final model, the percentage of
+variance explained by the model rises to 81.51% with the inclusion of
+two more predictors (`wt` and interaction of `wt` and `am`).
+
+-   **Final model:**
+
+![
+mpg=
+\\begin{cases}
+\\text{Automatic vehicle (am = 0)} \\implies \\beta_0 + \\beta_1 \\cdot wt = 31.42 + 14.88 \\cdot wt \\\\
+\\text{Manual vehicle (am = 1)} \\implies \\Big(\\beta_0 + \\beta_2 \\Big)+ \\Big( \\beta_1 + \\beta_3 \\Big) \\cdot wt = 27.63 + 9.58 \\cdot wt
+\\end{cases}
+](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0Ampg%3D%0A%5Cbegin%7Bcases%7D%0A%5Ctext%7BAutomatic%20vehicle%20%28am%20%3D%200%29%7D%20%5Cimplies%20%5Cbeta_0%20%2B%20%5Cbeta_1%20%5Ccdot%20wt%20%3D%2031.42%20%2B%2014.88%20%5Ccdot%20wt%20%5C%5C%0A%5Ctext%7BManual%20vehicle%20%28am%20%3D%201%29%7D%20%5Cimplies%20%5CBig%28%5Cbeta_0%20%2B%20%5Cbeta_2%20%5CBig%29%2B%20%5CBig%28%20%5Cbeta_1%20%2B%20%5Cbeta_3%20%5CBig%29%20%5Ccdot%20wt%20%3D%2027.63%20%2B%209.58%20%5Ccdot%20wt%0A%5Cend%7Bcases%7D%0A "
+mpg=
+\begin{cases}
+\text{Automatic vehicle (am = 0)} \implies \beta_0 + \beta_1 \cdot wt = 31.42 + 14.88 \cdot wt \\
+\text{Manual vehicle (am = 1)} \implies \Big(\beta_0 + \beta_2 \Big)+ \Big( \beta_1 + \beta_3 \Big) \cdot wt = 27.63 + 9.58 \cdot wt
+\end{cases}
+")
+
+<!-- Adding a Page Break to starting a new APPENDIX page -->
+## APPENDIX
+
+### A1. Exploratory Data Analysis
+
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+**Figure 1** – Exploratory Data Visualization
+
+### A2. Miles per Galon (`mpg`) vs Transmission (`am`)
+
+![](README_files/figure-gfm/eda-1.png)<!-- -->
+
+**Figure 2** – Fuel Consumption divided into Transmission and number of
+Gears.
+
+### A2. Residuals
+
+![](README_files/figure-gfm/residuals-1.png)<!-- -->
+
+**Figure 3** – Residuals.
+
+### A2. Correlation Matrix
+
+![](README_files/figure-gfm/eda-mpg-vs-am-1.png)<!-- -->
+
+**Figure 4** – Correlation Matrix
