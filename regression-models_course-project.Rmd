@@ -1,0 +1,253 @@
+---
+author: 'Anderson Hitoshi Uyekita'
+date: !r lubridate::ymd("2022-07-09", tz = "America/Sao_Paulo")
+output:
+  pdf_document:
+    extra_dependencies: ["float"]
+---
+
+# Course Project -- Motor Trend Automobile Benchmark
+
+* Author: `r 'Anderson Hitoshi Uyekita'`
+* Date: `r format(lubridate::ymd("2022-07-08", tz = "America/Sao_Paulo"), "%A, %d %B %Y")`
+
+### Executive Summary
+
+The data analysis process in this document has identified that manual vehicles have better performance than automatics concerning miles per gallon (`mpg`). Furthermore, based on the linear regression modeled by this study, this difference in absolute value has reached an average of 3.79 miles per gallon, which is a significant number.
+
+```{r loading_packages,echo=FALSE,warning=FALSE,message=FALSE}
+# Loading libraries
+library(ggplot2)
+library(tidyverse)
+library(magrittr)
+library(datasets)
+library(explore)
+library(kableExtra)
+library(gridExtra)
+
+# Force results to be in English
+base::invisible(Sys.setlocale("LC_ALL", "English.utf8"))
+
+# Set seed to turn it reproducible
+base::set.seed(2022)
+
+knitr::opts_chunk$set(fig.pos = "!H", out.extra = "")
+```
+
+## 1. Introduction
+
+The _Motor Trend Car Road Test_ has evaluated 32 automobiles varying from 1973-74 models, and this study comprises fuel consumption, horsepower, weight, and other aspects. Based on it, the present publication aims to answer two questions:
+
+1. "Is an automatic or manual transmission better for MPG?"
+2. "Quantify the MPG difference between automatic and manual transmissions."
+
+## 2. Requeriments and Settings
+
+If you are interested in reproducing this study, please visit the [Github repository][github_url] to have access to the raw document.
+
+[github_url]: https://github.com/AndersonUyekita/regression-models_course-project
+
+## 3. Loading Data and EDA
+
+```{r loading-data,echo=FALSE}
+# Loading the mtcars dataset.
+df_cars <- datasets::mtcars
+
+# Data manipulation
+df_cars <- df_cars %>%
+    mutate(
+        vs = factor(vs, labels = c("V", "S")),
+        am = factor(am, labels = c("automatic", "manual")),
+        cyl  = ordered(cyl),
+        gear = ordered(gear),
+        carb = ordered(carb))
+```
+
+The adjusted data frame has 32 observations with no `NA` values, divided into 6 (six) numeric variables (no one is standardized or scaled) and 5 (five) categorical variables. For more exploratory details, please, find them in APPENDIX section A1. For more information about the variables descriptions, please, see it on the [R Documentation website][mtcars_documentation].
+
+[mtcars_documentation]:https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html
+
+```{r t-test,echo=FALSE}
+# Testing the H0 hypothesis.
+#
+# H0 : mu_automatic  = mu_manual
+# H1 : mu_automatic != mu_manual
+#
+# Due to the size of the sample, I have used the t-test.
+#
+t.test(subset(x = df_cars, subset = am == "automatic", select = mpg),
+       subset(x = df_cars, subset = am == "manual", select = mpg),
+       paired = FALSE,
+       alternative = "two.sided") -> c3_t.test
+```
+
+Due to Figure 2 in section A2 from APPENDIX, I have tested the hypothesis that the average consumption from automatic and manual vehicles is equal. In other words, $H_O: \mu_{automatic} = \mu_{manual}$, the p-value is `r round(c3_t.test$p.value, 4)*100`% which is way less than alpha (5%). For this reason, the $H_O$ was **Rejected**, which means the averages of automatic and manual transmissions are from different populations.
+
+## 4. Model Selection
+
+The model selection approach used for this project is based on the Week 3 videos and the Chapter Multiple variables and model selection from Regression Models for Data Science in R book.
+
+### 4.1. Base line model
+
+$$lm(formula  = mpg \sim am, data = mtcars)$$
+
+```{r baseline-model,echo=FALSE,message=FALSE,warning=FALSE}
+# Baseline model using only transmission.
+fit1 <- lm(data = df_cars, formula = mpg ~ am)
+
+# Storing the summary info.
+summary_fit1 <- summary(fit1)
+```
+
+The baseline model is the Ordinary Linear Regression, and this model uses only transmission (`am`) to explain the consumption in miles per gallon (`mpg`). From the hypothesis tested in Section 3, this baseline model has identified that manual transmission performs better than automatic ones. On average, manual transmission yields `r round(summary_fit1$coefficients[1,1], 2) + round(summary_fit1$coefficients[2,1], 2)` miles per gallon. On the other hand, automatic transmission yield `r round(summary_fit1$coefficients[1,1], 2)` miles per gallon. The difference is `r round(summary_fit1$coefficients[2,1], 2)` miles per gallon.
+
+### 4.2. Analysis of Variance
+
+Using the `anova()` function, it was possible to run several combinations, reaching the final model using am, wt, and interaction between am and wt.
+
+$$lm(formula  = mpg \sim am + wt + am \cdot wt, data = mtcars)$$
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+# Baseline
+fit1 <- lm(data = df_cars, formula = mpg ~ am)
+
+# Adding wt
+fit2 <- update(fit1, formula = mpg ~ am + wt)
+
+# Adding relationship between am and wt.
+fit3 <- update(fit1, formula = mpg ~ am + wt + am * wt)
+
+# Creating the final model.
+fit_final <- fit3;
+```
+
+I have decided to use a simpler model due to the parsimony. The R2 adjusted has reached `r round(summary(fit_final)$adj.r.squared,4)*100`%. All p-values of the model are below alpha (5%).
+
+The linear model coefficients: 
+
+```{r,fig.pos="!H",echo=FALSE}
+
+
+summary(fit_final)$coeff %>% kbl(booktabs = TRUE) %>% kable_styling(latex_options = c("striped","hold_position"))
+```
+
+## 5. Residual Analysis
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+c5.test <- shapiro.test(resid(fit_final))
+```
+
+Due to the low number of observations, below 50, I have used the Shapiro-Wilk test to ensure the residual's normality. The p-value obtained from this test was `r round(c5.test$p.value,4)*100`%, sufficient to reject the null hypothesis and proving the residual's normality.
+
+The residual analysis will be based on Figure 2 in section A2. from APPENDIX. This figure aims to corroborate the following explanations:
+
+* **Residual vs. Fitted:** The residual bounces around zero, which suggests an excellent linear relationship. Also, the residual is a homogeneous spread on the plot showing that the variance is "constant" in addition, I have identified no outlier.
+* **Normal Q-Q:** Most of the data is around the line, except in the top right of the chart. I did not identify any issue related to non-normality.
+* **Scale-Location:** There are no patterns in the points, the data stay between a fixed band, and the red line is almost constant. From those characteristics, the residual is considered homoscedasticity.
+* **Residual vs. Leverage:** No points above the dotted line means there is no influential high point.
+
+## 6. Conclusion
+
+Considering the baseline model, the `am` variable can explain `r round(summary(fit1)$adj.r.squared,4)*100`% of the miles per gallon. However, In the final model, the percentage of variance explained by the model rises to `r round(summary(fit_final)$adj.r.squared,4)*100`% with the inclusion of two more predictors (`wt` and interaction of `wt` and `am`).
+
+* **Final model:**
+
+$$
+mpg=
+\begin{cases}
+\text{Automatic vehicle (am = 0)} \implies \beta_0 + \beta_1 \cdot wt = 31.42 + 14.88 \cdot wt \\
+\text{Manual vehicle (am = 1)} \implies \Big(\beta_0 + \beta_2 \Big)+ \Big( \beta_1 + \beta_3 \Big) \cdot wt = 27.63 + 9.58 \cdot wt
+\end{cases}
+$$
+
+<!-- Adding a Page Break to starting a new APPENDIX page -->
+\newpage
+
+\center
+
+## APPENDIX
+
+\raggedright
+
+### A1. Exploratory Data Analysis
+
+```{r,fig.height=5,echo=FALSE}
+df_cars %>% 
+    select(-am) %>%
+    explore_all(target = mpg, ncol = 4)
+```
+
+\center
+
+**Figure 1** -- Exploratory Data Visualization
+
+\raggedright
+
+### A2. Miles per Galon (`mpg`) vs Transmission (`am`)
+
+```{r eda,fig.height=2,echo=FALSE,warning=FALSE,message=FALSE}
+# Creating a plot of MPG and AM.
+df_cars %>% 
+    ggplot(aes(x = am, y = mpg, fill = am)) + 
+    geom_boxplot() +
+    theme(legend.position="none")-> fig2.1
+
+# Creating a facet grid of MPG and AM.
+df_cars %>% 
+    ggplot(aes(x = am, y = mpg, fill = am)) + 
+    geom_violin() + 
+    geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 0.5) +
+    facet_grid(cols = vars(gear)) +
+    theme(legend.position="none") -> fig2.2
+
+# Combining the above two graphs into one.
+grid.arrange(fig2.1, fig2.2, ncol=2, widths=c(1.5, 4))
+```
+
+\center
+
+**Figure 2** -- Fuel Consumption divided into Transmission and number of Gears.
+
+\raggedright
+
+### A2. Residuals
+
+```{r residuals,fig.height=6,echo=FALSE,warning=FALSE,message=FALSE}
+par(mfrow = c(2, 2))
+plot(fit_final)
+```
+
+\center
+
+**Figure 3** -- Residuals.
+
+\raggedright
+
+### A2. Correlation Matrix
+
+```{r eda-mpg-vs-am,fig.height=8,echo=FALSE,warning=FALSE,message=FALSE}
+# Correlation panel
+upper.panel <- function(x, y){
+    usr <- par("usr"); on.exit(par(usr))
+    par(usr = c(0, 1, 0, 1))
+    r <- round(cor(x, y), digits=2)
+    txt <- paste0("R = ", r)
+    text(0.5, 0.5, txt, cex = .75)
+}
+
+my_cols <- c("#00AFBB", "#E7B800")
+
+# Customize upper panel
+lower.panel <- function(x, y){
+  points(x,y, pch = 19, col = my_cols[df_cars$am])
+}
+
+df_cars %>%
+    select(mpg, disp, hp, drat, wt, qsec, gear, vs, cyl, carb) %>%
+pairs(upper.panel = upper.panel,
+      lower.panel = lower.panel)
+```
+
+\center
+
+**Figure 4** -- Correlation Matrix
