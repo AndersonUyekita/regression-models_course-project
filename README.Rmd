@@ -47,7 +47,7 @@ library(rmarkdown)
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/AndersonUyekita/regression-models_course-project/main?urlpath=rstudio)
 
-### Synopsis
+### Executive Summary
 
 Ipsum Lorem
 
@@ -55,4 +55,26 @@ Ipsum Lorem
 
 ## 1. Introduction
 
-Ipsum Lorem
+The _Motor Trend Car Road Test_ has evaluated 32 automobiles varying from 1973-74 models, and this study comprises fuel consumption, horsepower, weight, and other aspects. Based on it, the present publication aims to answer one central question:
+
+1. "Is an automatic or manual transmission better for MPG?"
+
+Even though is it true or not, this document will:
+
+2. "Quantify the MPG difference between automatic and manual transmissions."
+
+## 2. Requeriments and Settings
+
+If you are prone to reproduce this study, please visit the [Github repository][github_url] to have access to the raw document.
+
+[github_url]: https://github.com/AndersonUyekita/regression-models_course-project
+
+## 3. Loading Data and EDA
+
+
+
+```{r}
+mtcars
+
+```
+
