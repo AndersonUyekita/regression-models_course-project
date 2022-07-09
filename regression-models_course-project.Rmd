@@ -9,7 +9,7 @@ output:
 # Course Project -- Motor Trend Automobile Benchmark
 
 * Author: `r 'Anderson Hitoshi Uyekita'`
-* Date: `r format(lubridate::ymd("2022-07-08", tz = "America/Sao_Paulo"), "%A, %d %B %Y")`
+* Date: `r format(lubridate::ymd("2022-07-09", tz = "America/Sao_Paulo"), "%A, %d %B %Y")`
 
 ### Executive Summary
 
