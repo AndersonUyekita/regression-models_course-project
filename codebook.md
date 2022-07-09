@@ -12,7 +12,7 @@
     -   🧑‍🏫 Instructor: Brian Caffo
 -   📆 Week 4
     -   🚦 Start: Tuesday, 05 July 2022
-    -   🏁 Finish: Tuesday, 05 July 2022
+    -   🏁 Finish: Friday, 08 July 2022
 -   🌎 Rpubs: [Interactive
     Document](https://rpubs.com/AndersonUyekita/regression-models_reproducible-research)
 -   📋 Instructions: [Project Instructions](./instructions.md)
@@ -104,3 +104,11 @@ Documentation](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcar
 ![](codebook_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ![](codebook_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+------------------------------------------------------------------------
+
+![](codebook_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+![](codebook_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+![](codebook_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->

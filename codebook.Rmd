@@ -107,3 +107,23 @@ mtcars %>%
   select(am, carb,vs, gear) %>% 
   explore_all(target = gear)
 ```
+
+---
+
+```{r,echo=FALSE}
+mtcars %>% 
+  select(mpg, cyl, disp, hp, am) %>% 
+  explore_all(target = am)
+```
+
+```{r,echo=FALSE}
+mtcars %>% 
+  select(drat, wt, qsec, vs, am) %>% 
+  explore_all(target = am)
+```
+
+```{r,echo=FALSE}
+mtcars %>% 
+  select(gear, carb,vs, am) %>% 
+  explore_all(target = am)
+```
