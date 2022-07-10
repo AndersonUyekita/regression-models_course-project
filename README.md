@@ -13,6 +13,8 @@
 -   📆 Week 4
     -   🚦 Start: Tuesday, 05 July 2022
     -   🏁 Finish: Saturday, 09 July 2022
+-   🌎 Rpubs: [Interactive
+    Document](https://rpubs.com/AndersonUyekita/course-project_regression-models)
 
 ------------------------------------------------------------------------
 
@@ -70,10 +72,10 @@ transmissions are from different populations.
 ## 4. Model Selection
 
 The model selection approach used for this project is based on the Week
-3 videos and the Chapter Multiple variables and model selection from
-Regression Models for Data Science in R book.
+3 videos and the Chapter “Multiple variables and model selection from
+Regression Models for Data Science” in R book.
 
-### 4.1. Base line model
+### 4.1. Baseline model
 
 ![lm(formula  = mpg \\sim am, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am, data = mtcars)")
 
@@ -88,14 +90,14 @@ gallon. The difference is 7.24 miles per gallon.
 ### 4.2. Analysis of Variance
 
 Using the `anova()` function, it was possible to run several
-combinations, reaching the final model using am, wt, and interaction
-between am and wt.
+combinations, reaching the final model using `am`, `wt`, and interaction
+between `am` and `wt`.
 
 ![lm(formula  = mpg \\sim am + wt + am \\cdot wt, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%20%2B%20wt%20%2B%20am%20%5Ccdot%20wt%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am + wt + am \cdot wt, data = mtcars)")
 
-I have decided to use a simpler model due to the parsimony. The R2
-adjusted has reached 81.51%. All p-values of the model are below alpha
-(5%).
+I have decided to use a simpler model due to the parsimony. The
+`R² adjusted` has reached 81.51%. All p-values of the model are below
+alpha (5%).
 
 The linear model coefficients:
 

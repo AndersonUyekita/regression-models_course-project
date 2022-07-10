@@ -21,7 +21,7 @@ params:
   course_finish: !r lubridate::ymd('2022/07/09', tz = 'America/Sao_Paulo')
   week: "Week 4"
   slug: 'Week%204'
-  rpubs: 'https://rpubs.com/AndersonUyekita/course-project_regression-modelsh'
+  rpubs: 'https://rpubs.com/AndersonUyekita/course-project_regression-models'
   project_repo: 'https://github.com/AndersonUyekita/regression-models_course-project'
   codebook: 'https://github.com/AndersonUyekita/regression-models_course-project/blob/master/codebook.md'
   instructions: 'https://github.com/AndersonUyekita/regression-models_course-project/blob/master/instructions.md'
@@ -40,6 +40,8 @@ library(rmarkdown)
 `r sprintf(fmt = "* &#x1F4C6; %s", params$week)`
     `r sprintf(fmt = "* &#x1F6A6; Start: %s", format(params$course_start, "%A, %d %B %Y"))`
     `r sprintf(fmt = "* &#x1F3C1; Finish: %s", format(params$course_finish, "%A, %d %B %Y"))`
+`r if(!knitr::is_html_output()) {sprintf(fmt = "* &#x1F30E; Rpubs: [Interactive Document](%s)", params$rpubs)}else{sprintf(fmt = "* &#x1F4E6; Github Repository: [Static Document](%s){target='_blank' rel='noopener'}", params$project_repo)}`
+
 
 --------------------------------------------------------------------------------
 
@@ -123,9 +125,9 @@ Due to Figure 2 in section A2 from APPENDIX, I have tested the hypothesis that t
 
 ## 4. Model Selection
 
-The model selection approach used for this project is based on the Week 3 videos and the Chapter Multiple variables and model selection from Regression Models for Data Science in R book.
+The model selection approach used for this project is based on the Week 3 videos and the Chapter "Multiple variables and model selection from Regression Models for Data Science" in R book.
 
-### 4.1. Base line model
+### 4.1. Baseline model
 
 $$lm(formula  = mpg \sim am, data = mtcars)$$
 
@@ -141,7 +143,7 @@ The baseline model is the Ordinary Linear Regression, and this model uses only t
 
 ### 4.2. Analysis of Variance
 
-Using the `anova()` function, it was possible to run several combinations, reaching the final model using am, wt, and interaction between am and wt.
+Using the `anova()` function, it was possible to run several combinations, reaching the final model using `am`, `wt`, and interaction between `am` and `wt`.
 
 $$lm(formula  = mpg \sim am + wt + am \cdot wt, data = mtcars)$$
 
@@ -159,7 +161,7 @@ fit3 <- update(fit1, formula = mpg ~ am + wt + am * wt)
 fit_final <- fit3;
 ```
 
-I have decided to use a simpler model due to the parsimony. The R2 adjusted has reached `r round(summary(fit_final)$adj.r.squared,4)*100`%. All p-values of the model are below alpha (5%).
+I have decided to use a simpler model due to the parsimony. The `R² adjusted` has reached `r round(summary(fit_final)$adj.r.squared,4)*100`%. All p-values of the model are below alpha (5%).
 
 The linear model coefficients: 
 
