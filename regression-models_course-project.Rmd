@@ -1,6 +1,6 @@
 ---
 author: 'Anderson Hitoshi Uyekita'
-date: !r lubridate::ymd("2022-07-09", tz = "America/Sao_Paulo")
+date: !r lubridate::ymd("2022-07-10", tz = "America/Sao_Paulo")
 output:
   pdf_document:
     extra_dependencies: ["float"]
@@ -13,7 +13,7 @@ output:
 
 ### Executive Summary
 
-The data analysis process in this document has identified that manual vehicles have better performance than automatics concerning miles per gallon (`mpg`). Furthermore, based on the linear regression modeled by this study, this difference in absolute value has reached an average of 3.79 miles per gallon, which is a significant number.
+The data analysis process in this document has identified that manual vehicles have better performance than automatics concerning miles per gallon (`mpg`). Furthermore, based on this study's linear regression model, the difference has reached 7.24 miles per gallon based on the average weights of automatic and manual cars (See Figure 4 in APPENDIX Section A4.), which is a significant number.
 
 ```{r loading_packages,echo=FALSE,warning=FALSE,message=FALSE}
 # Loading libraries
@@ -139,7 +139,7 @@ c5.test <- shapiro.test(resid(fit_final))
 
 Due to the low number of observations, below 50, I have used the Shapiro-Wilk test to ensure the residual's normality. The p-value obtained from this test was `r round(c5.test$p.value,4)*100`%, sufficient to reject the null hypothesis and proving the residual's normality.
 
-The residual analysis will be based on Figure 2 in section A2. from APPENDIX. This figure aims to corroborate the following explanations:
+The residual analysis will be based on Figure 3 in APPENDIX Section A3.. This figure aims to corroborate the following explanations:
 
 * **Residual vs. Fitted:** The residual bounces around zero, which suggests an excellent linear relationship. Also, the residual is a homogeneous spread on the plot showing that the variance is "constant" in addition, I have identified no outlier.
 * **Normal Q-Q:** Most of the data is around the line, except in the top right of the chart. I did not identify any issue related to non-normality.
@@ -152,13 +152,11 @@ Considering the baseline model, the `am` variable can explain `r round(summary(f
 
 * **Final model:**
 
-$$
-mpg=
+$$mpg=
 \begin{cases}
-\text{Automatic vehicle (am = 0)} \implies \beta_0 + \beta_1 \cdot wt = 31.42 + 14.88 \cdot wt \\
-\text{Manual vehicle (am = 1)} \implies \Big(\beta_0 + \beta_2 \Big)+ \Big( \beta_1 + \beta_3 \Big) \cdot wt = 27.63 + 9.58 \cdot wt
-\end{cases}
-$$
+\text{Automatic vehicle (am = 0)} \implies \beta_0 + \beta_2 \cdot wt = 31.42 -3.79 \cdot wt \\
+\text{Manual vehicle (am = 1)} \implies (\beta_0 + \beta_1) + (\beta_2 + \beta_3) \cdot wt = 46.29-9.08 \cdot wt
+\end{cases}$$
 
 <!-- Adding a Page Break to starting a new APPENDIX page -->
 \newpage
@@ -210,7 +208,7 @@ grid.arrange(fig2.1, fig2.2, ncol=2, widths=c(1.5, 4))
 
 \raggedright
 
-### A2. Residuals
+### A3. Residuals
 
 ```{r residuals,fig.height=6,echo=FALSE,warning=FALSE,message=FALSE}
 par(mfrow = c(2, 2))
@@ -223,31 +221,87 @@ plot(fit_final)
 
 \raggedright
 
-### A2. Correlation Matrix
+### A4. Regression Lines
 
-```{r eda-mpg-vs-am,fig.height=8,echo=FALSE,warning=FALSE,message=FALSE}
-# Correlation panel
-upper.panel <- function(x, y){
-    usr <- par("usr"); on.exit(par(usr))
-    par(usr = c(0, 1, 0, 1))
-    r <- round(cor(x, y), digits=2)
-    txt <- paste0("R = ", r)
-    text(0.5, 0.5, txt, cex = .75)
-}
+```{r,echo=FALSE,fig.height=6}
+# Calculating the MPG for Automatic Cars based on average WT
+car_0 <- 31.416055 - 3.785907 * mean(subset(x = df_cars, am == "automatic", select = wt)$wt)
 
-my_cols <- c("#00AFBB", "#E7B800")
+# Calculating the MPG for Manual Cars based on average WT
+car_1 <- 46.294477 - 9.084268 * mean(subset(x = df_cars, am == "manual", select = wt)$wt)
 
-# Customize upper panel
-lower.panel <- function(x, y){
-  points(x,y, pch = 19, col = my_cols[df_cars$am])
-}
-
+# Plotting.
 df_cars %>%
-    select(mpg, disp, hp, drat, wt, qsec, gear, vs, cyl, carb) %>%
-pairs(upper.panel = upper.panel,
-      lower.panel = lower.panel)
-```
+    
+    # A scatter plot.
+    ggplot(aes(x = wt, y = mpg)) + 
+    geom_point(aes(color = am)) + 
+    
+    # AUTOMATIC: Adding Automatic regression line.
+    geom_abline(slope = - 3.785907,
+                intercept = 31.416055,
+                color = "#F8766D") + 
+    
+    # AUTOMATIC: Adding horizontal line until weight average
+    geom_segment(data = data.frame("mpg" = car_0,
+                                   "wt" = mean(subset(x = df_cars, am == "automatic", select = wt)$wt)),
+                 aes(xend = -Inf, yend = car_0),
+               color = "#F8766D",
+               lty = 2) + 
+    
+    # AUTOMATIC: Adding vertical line until mpg average
+    geom_segment(data = data.frame("mpg" = car_0,
+                                   "wt" = mean(subset(x = df_cars, am == "automatic", select = wt)$wt)),
+                 aes(xend = mean(subset(x = df_cars, am == "automatic", select = wt)$wt), yend = -Inf),
+               color = "#F8766D",
+               lty = 2) +     
+    
+    # MANUAL: Adding Automatic regression line.
+    geom_abline(slope = - 9.084268,
+                intercept = 46.294477,
+                color = "#00BFC4") +
+    
+    # MANUAL: Adding horizontal line until weight average
+    geom_segment(data = data.frame("mpg" = car_1,
+                                   "wt" = mean(subset(x = df_cars, am == "manual", select = wt)$wt)),
+                 aes(xend = -Inf, yend = car_1),
+               color = "#00BFC4",
+               lty = 2) + 
 
+    # MANUAL: Adding vertical line until mpg average
+    geom_segment(data = data.frame("mpg" = car_1,
+                                   "wt" = mean(subset(x = df_cars, am == "manual", select = wt)$wt)),
+                 aes(xend = mean(subset(x = df_cars, am == "manual", select = wt)$wt), yend = -Inf),
+               color = "#00BFC4",
+               lty = 2) +   
+    
+    # Adding labels of mog average for each kind of transmission.
+    geom_label(data = data.frame("wt" = c(0,0), "mpg" = c(car_0, car_1)),
+              aes(x = wt,
+                  y = mpg,
+                  label = c(round(car_0,2), round(car_1,2)), fill = factor(mpg)), show.legend = FALSE,
+              color = "white",
+              fontface = "bold"
+              ) + 
+    
+    # Adding title
+    labs(title = "Regression Lines by Vehicle Transmission",
+         subtitle = "mpg outcome based on the average for each type of vehicle transmission") + 
+    
+    # Editing the x-axis
+    xlab(label = "Weight [ton]") + 
+    
+    # Editing the y-axis
+    ylab(label = "Miles per Gallon [mpg]") + 
+    
+    # Moving the legend to bottom.
+    theme(legend.position = "bottom",
+          legend.title.align = 0.5,
+          plot.title = ggplot2::element_text(hjust = 0.5)) +
+    
+    # Removing the legend title.
+    ggplot2::guides(fill = ggplot2::guide_legend(title = ""))
+```
 \center
 
-**Figure 4** -- Correlation Matrix
+**Figure 4** -- On average, a manual car yields 7.24 more miles per gallon than automatics.

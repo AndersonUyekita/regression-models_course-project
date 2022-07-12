@@ -26,11 +26,10 @@
 
 The data analysis process in this document has identified that manual
 vehicles have better performance than automatics concerning miles per
-gallon (`mpg`). Furthermore, based on the linear regression modeled by
-this study, this difference in absolute value has reached an average of
-3.79 miles per gallon, which is a significant number.
-
-------------------------------------------------------------------------
+gallon (`mpg`). Furthermore, based on this study’s linear regression
+model, the difference has reached 7.24 miles per gallon based on the
+average weights of automatic and manual cars (See Figure 4 in APPENDIX
+Section A4.), which is a significant number.
 
 ## 1. Introduction
 
@@ -72,10 +71,10 @@ transmissions are from different populations.
 ## 4. Model Selection
 
 The model selection approach used for this project is based on the Week
-3 videos and the Chapter “Multiple variables and model selection from
-Regression Models for Data Science” in R book.
+3 videos and the Chapter Multiple variables and model selection from
+Regression Models for Data Science in R book.
 
-### 4.1. Baseline model
+### 4.1. Base line model
 
 ![lm(formula  = mpg \\sim am, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am, data = mtcars)")
 
@@ -90,14 +89,14 @@ gallon. The difference is 7.24 miles per gallon.
 ### 4.2. Analysis of Variance
 
 Using the `anova()` function, it was possible to run several
-combinations, reaching the final model using `am`, `wt`, and interaction
-between `am` and `wt`.
+combinations, reaching the final model using am, wt, and interaction
+between am and wt.
 
 ![lm(formula  = mpg \\sim am + wt + am \\cdot wt, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%20%2B%20wt%20%2B%20am%20%5Ccdot%20wt%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am + wt + am \cdot wt, data = mtcars)")
 
-I have decided to use a simpler model due to the parsimony. The
-`R² adjusted` has reached 81.51%. All p-values of the model are below
-alpha (5%).
+I have decided to use a simpler model due to the parsimony. The R2
+adjusted has reached 81.51%. All p-values of the model are below alpha
+(5%).
 
 The linear model coefficients:
 
@@ -199,8 +198,8 @@ Shapiro-Wilk test to ensure the residual’s normality. The p-value
 obtained from this test was 8.72%, sufficient to reject the null
 hypothesis and proving the residual’s normality.
 
-The residual analysis will be based on Figure 2 in section A2. from
-APPENDIX. This figure aims to corroborate the following explanations:
+The residual analysis will be based on Figure 3 in APPENDIX Section A3..
+This figure aims to corroborate the following explanations:
 
 -   **Residual vs. Fitted:** The residual bounces around zero, which
     suggests an excellent linear relationship. Also, the residual is a
@@ -224,19 +223,15 @@ two more predictors (`wt` and interaction of `wt` and `am`).
 
 -   **Final model:**
 
-![
-mpg=
+![mpg=
 \\begin{cases}
-\\text{Automatic vehicle (am = 0)} \\implies \\beta_0 + \\beta_1 \\cdot wt = 31.42 + 14.88 \\cdot wt \\\\
-\\text{Manual vehicle (am = 1)} \\implies \\Big(\\beta_0 + \\beta_2 \\Big)+ \\Big( \\beta_1 + \\beta_3 \\Big) \\cdot wt = 27.63 + 9.58 \\cdot wt
-\\end{cases}
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0Ampg%3D%0A%5Cbegin%7Bcases%7D%0A%5Ctext%7BAutomatic%20vehicle%20%28am%20%3D%200%29%7D%20%5Cimplies%20%5Cbeta_0%20%2B%20%5Cbeta_1%20%5Ccdot%20wt%20%3D%2031.42%20%2B%2014.88%20%5Ccdot%20wt%20%5C%5C%0A%5Ctext%7BManual%20vehicle%20%28am%20%3D%201%29%7D%20%5Cimplies%20%5CBig%28%5Cbeta_0%20%2B%20%5Cbeta_2%20%5CBig%29%2B%20%5CBig%28%20%5Cbeta_1%20%2B%20%5Cbeta_3%20%5CBig%29%20%5Ccdot%20wt%20%3D%2027.63%20%2B%209.58%20%5Ccdot%20wt%0A%5Cend%7Bcases%7D%0A "
-mpg=
+\\text{Automatic vehicle (am = 0)} \\implies \\beta_0 + \\beta_2 \\cdot wt = 31.42 -3.79 \\cdot wt \\\\
+\\text{Manual vehicle (am = 1)} \\implies (\\beta_0 + \\beta_1) + (\\beta_2 + \\beta_3) \\cdot wt = 46.29-9.08 \\cdot wt
+\\end{cases}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;mpg%3D%0A%5Cbegin%7Bcases%7D%0A%5Ctext%7BAutomatic%20vehicle%20%28am%20%3D%200%29%7D%20%5Cimplies%20%5Cbeta_0%20%2B%20%5Cbeta_2%20%5Ccdot%20wt%20%3D%2031.42%20-3.79%20%5Ccdot%20wt%20%5C%5C%0A%5Ctext%7BManual%20vehicle%20%28am%20%3D%201%29%7D%20%5Cimplies%20%28%5Cbeta_0%20%2B%20%5Cbeta_1%29%20%2B%20%28%5Cbeta_2%20%2B%20%5Cbeta_3%29%20%5Ccdot%20wt%20%3D%2046.29-9.08%20%5Ccdot%20wt%0A%5Cend%7Bcases%7D "mpg=
 \begin{cases}
-\text{Automatic vehicle (am = 0)} \implies \beta_0 + \beta_1 \cdot wt = 31.42 + 14.88 \cdot wt \\
-\text{Manual vehicle (am = 1)} \implies \Big(\beta_0 + \beta_2 \Big)+ \Big( \beta_1 + \beta_3 \Big) \cdot wt = 27.63 + 9.58 \cdot wt
-\end{cases}
-")
+\text{Automatic vehicle (am = 0)} \implies \beta_0 + \beta_2 \cdot wt = 31.42 -3.79 \cdot wt \\
+\text{Manual vehicle (am = 1)} \implies (\beta_0 + \beta_1) + (\beta_2 + \beta_3) \cdot wt = 46.29-9.08 \cdot wt
+\end{cases}")
 
 <!-- Adding a Page Break to starting a new APPENDIX page -->
 ## APPENDIX
@@ -254,14 +249,15 @@ mpg=
 **Figure 2** – Fuel Consumption divided into Transmission and number of
 Gears.
 
-### A2. Residuals
+### A3. Residuals
 
 ![](README_files/figure-gfm/residuals-1.png)<!-- -->
 
 **Figure 3** – Residuals.
 
-### A2. Correlation Matrix
+### A4. Regression Lines
 
-![](README_files/figure-gfm/eda-mpg-vs-am-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-**Figure 4** – Correlation Matrix
+**Figure 4** – On average, a manual car yields 7.24 more miles per
+gallon than automatics.
