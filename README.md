@@ -3,9 +3,9 @@
 
 -   👨🏻‍💻 Author: Anderson H Uyekita
 -   📚 Specialization: <a
-    href="https://www.coursera.org/specializations/data-science-foundations-r"
-    target="_blank" rel="noopener">Data Science: Foundations using R
-    Specialization</a>
+    href="https://www.coursera.org/specializations/data-science-statistics-machine-learning"
+    target="_blank" rel="noopener">Data Science: Statistics and Machine
+    Learning Specialization</a>
 -   📖 Course:
     <a href="https://www.coursera.org/learn/regression-models"
     target="_blank" rel="noopener">Regression Models</a>
@@ -61,7 +61,7 @@ website](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html
 Due to Figure 2 in section A2 from APPENDIX, I have tested the
 hypothesis that the average consumption from automatic and manual
 vehicles is equal. In other words,
-![H_O: \\mu\_{automatic} = \\mu\_{manual}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;H_O%3A%20%5Cmu_%7Bautomatic%7D%20%3D%20%5Cmu_%7Bmanual%7D "H_O: \mu_{automatic} = \mu_{manual}"),
+![H_O: \mu\_{automatic} = \mu\_{manual}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;H_O%3A%20%5Cmu_%7Bautomatic%7D%20%3D%20%5Cmu_%7Bmanual%7D "H_O: \mu_{automatic} = \mu_{manual}"),
 the p-value is 0.14% which is way less than alpha (5%). For this reason,
 the
 ![H_O](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;H_O "H_O")
@@ -76,7 +76,7 @@ Regression Models for Data Science in R book.
 
 ### 4.1. Base line model
 
-![lm(formula  = mpg \\sim am, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am, data = mtcars)")
+![lm(formula  = mpg \sim am, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am, data = mtcars)")
 
 The baseline model is the Ordinary Linear Regression, and this model
 uses only transmission (`am`) to explain the consumption in miles per
@@ -92,7 +92,7 @@ Using the `anova()` function, it was possible to run several
 combinations, reaching the final model using am, wt, and interaction
 between am and wt.
 
-![lm(formula  = mpg \\sim am + wt + am \\cdot wt, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%20%2B%20wt%20%2B%20am%20%5Ccdot%20wt%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am + wt + am \cdot wt, data = mtcars)")
+![lm(formula  = mpg \sim am + wt + am \cdot wt, data = mtcars)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;lm%28formula%20%20%3D%20mpg%20%5Csim%20am%20%2B%20wt%20%2B%20am%20%5Ccdot%20wt%2C%20data%20%3D%20mtcars%29 "lm(formula  = mpg \sim am + wt + am \cdot wt, data = mtcars)")
 
 I have decided to use a simpler model due to the parsimony. The R2
 adjusted has reached 81.51%. All p-values of the model are below alpha
@@ -224,10 +224,10 @@ two more predictors (`wt` and interaction of `wt` and `am`).
 -   **Final model:**
 
 ![mpg=
-\\begin{cases}
-\\text{Automatic vehicle (am = 0)} \\implies \\beta_0 + \\beta_2 \\cdot wt = 31.42 -3.79 \\cdot wt \\\\
-\\text{Manual vehicle (am = 1)} \\implies (\\beta_0 + \\beta_1) + (\\beta_2 + \\beta_3) \\cdot wt = 46.29-9.08 \\cdot wt
-\\end{cases}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;mpg%3D%0A%5Cbegin%7Bcases%7D%0A%5Ctext%7BAutomatic%20vehicle%20%28am%20%3D%200%29%7D%20%5Cimplies%20%5Cbeta_0%20%2B%20%5Cbeta_2%20%5Ccdot%20wt%20%3D%2031.42%20-3.79%20%5Ccdot%20wt%20%5C%5C%0A%5Ctext%7BManual%20vehicle%20%28am%20%3D%201%29%7D%20%5Cimplies%20%28%5Cbeta_0%20%2B%20%5Cbeta_1%29%20%2B%20%28%5Cbeta_2%20%2B%20%5Cbeta_3%29%20%5Ccdot%20wt%20%3D%2046.29-9.08%20%5Ccdot%20wt%0A%5Cend%7Bcases%7D "mpg=
+\begin{cases}
+\text{Automatic vehicle (am = 0)} \implies \beta_0 + \beta_2 \cdot wt = 31.42 -3.79 \cdot wt \\\\
+\text{Manual vehicle (am = 1)} \implies (\beta_0 + \beta_1) + (\beta_2 + \beta_3) \cdot wt = 46.29-9.08 \cdot wt
+\end{cases}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;mpg%3D%0A%5Cbegin%7Bcases%7D%0A%5Ctext%7BAutomatic%20vehicle%20%28am%20%3D%200%29%7D%20%5Cimplies%20%5Cbeta_0%20%2B%20%5Cbeta_2%20%5Ccdot%20wt%20%3D%2031.42%20-3.79%20%5Ccdot%20wt%20%5C%5C%0A%5Ctext%7BManual%20vehicle%20%28am%20%3D%201%29%7D%20%5Cimplies%20%28%5Cbeta_0%20%2B%20%5Cbeta_1%29%20%2B%20%28%5Cbeta_2%20%2B%20%5Cbeta_3%29%20%5Ccdot%20wt%20%3D%2046.29-9.08%20%5Ccdot%20wt%0A%5Cend%7Bcases%7D "mpg=
 \begin{cases}
 \text{Automatic vehicle (am = 0)} \implies \beta_0 + \beta_2 \cdot wt = 31.42 -3.79 \cdot wt \\
 \text{Manual vehicle (am = 1)} \implies (\beta_0 + \beta_1) + (\beta_2 + \beta_3) \cdot wt = 46.29-9.08 \cdot wt

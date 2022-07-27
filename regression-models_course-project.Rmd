@@ -126,8 +126,6 @@ I have decided to use a simpler model due to the parsimony. The R2 adjusted has 
 The linear model coefficients: 
 
 ```{r,fig.pos="!H",echo=FALSE}
-
-
 summary(fit_final)$coeff %>% kbl(booktabs = TRUE) %>% kable_styling(latex_options = c("striped","hold_position"))
 ```
 

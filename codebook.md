@@ -3,16 +3,16 @@
 
 -   👨🏻‍💻 Author: Anderson H Uyekita
 -   📚 Specialization: <a
-    href="https://www.coursera.org/specializations/data-science-foundations-r"
-    target="_blank" rel="noopener">Data Science: Foundations using R
-    Specialization</a>
+    href="https://www.coursera.org/specializations/data-science-statistics-machine-learning"
+    target="_blank" rel="noopener">Data Science: Statistics and Machine
+    Learning Specialization</a>
 -   📖 Course:
     <a href="https://www.coursera.org/learn/regression-models"
     target="_blank" rel="noopener">Regression Models</a>
     -   🧑‍🏫 Instructor: Brian Caffo
 -   📆 Week 4
     -   🚦 Start: Tuesday, 05 July 2022
-    -   🏁 Finish: Friday, 08 July 2022
+    -   🏁 Finish: Saturday, 09 July 2022
 -   🌎 Rpubs: [Interactive
     Document](https://rpubs.com/AndersonUyekita/regression-models_reproducible-research)
 -   📋 Instructions: [Project Instructions](./instructions.md)
